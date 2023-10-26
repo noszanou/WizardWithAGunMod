@@ -2,9 +2,9 @@
 using GGUtil;
 using Inventory.Unity;
 using Inventory;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace BullshitLib
 {
@@ -65,7 +65,7 @@ namespace BullshitLib
             return AssetHandle<StaticItem>.invalid;
         }
 
-        public static void CreateItem(string itemNameToFind = "item-resource-wood", int amount = 1)
+        public static void CreateItem(string itemNameToFind, int amount = 1) // string fonctionne pas avec le winform MDDDDRRRR pg on prend avec litem id OWO
         {
             if (!GameUniverse.isValid)
             {
@@ -75,25 +75,26 @@ namespace BullshitLib
             InventorySystem system = GameUniverse.playerFocusedWorld.world.GetSystem<InventorySystem>();
             if (system == null)
             {
-                Debug.LogWarning("Cannot process give-item cmd because there is no InventorySystem");
+                Console.WriteLine("Cannot process give-item cmd because there is no InventorySystem");
                 return;
             }
 
             if (!GameUniverse.TryGetPlayerAvatarWorldAndEntity(out ECSWorld _, out ECSEntity entity))
             {
-                Debug.LogWarning("Cannot process give-item cmd because there is no Player Entity");
+                Console.WriteLine("Cannot process give-item cmd because there is no Player Entity");
                 return;
             }
 
             ItemAssetHandle itemHandle = new ItemAssetHandle(FindStaticItem(itemNameToFind, out string itemName));
+
             if (!itemHandle.isValid)
             {
-                Debug.LogWarning($"Could not find item using {itemNameToFind} as a search parameter.");
+                Console.WriteLine($"Could not find item using {itemNameToFind} as a search parameter.");
                 return;
             }
 
             system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
-            Debug.Log($"Successfully sent command to give {amount} {itemName}(s) to Player");
+            Console.WriteLine($"Successfully sent command to give {amount} {itemName}(s) to Player");
         }
 
         public static string GetItemsByName(string name = "")
@@ -105,7 +106,8 @@ namespace BullshitLib
                 string locItemName = asset.asset.locItemName;
                 if (string.IsNullOrEmpty(name) || asset.asset.name.Contains(name) || !string.IsNullOrEmpty(locItemName) && locItemName.Contains(name))
                 {
-                    stringBuilder.Append(string.Format("{0,-3} | {1,-55} | {2}", asset.handle.id, asset.asset.name, locItemName));
+                    //stringBuilder.Append(string.Format("{0,-3} | {1,-55} | {2}", asset.handle.id, asset.asset.name, locItemName));
+                    stringBuilder.Append(asset.asset.name);
                     stringBuilder.AppendLine();
                 }
             }

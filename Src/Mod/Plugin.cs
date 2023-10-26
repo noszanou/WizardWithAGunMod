@@ -78,7 +78,7 @@ namespace Mod
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                ItemInteraction.CreateItem(amount: 50);
+                ItemInteraction.CreateItem("item-resource-wood", 50);
             }
             if (Input.GetKeyDown(KeyCode.F2))
             {
