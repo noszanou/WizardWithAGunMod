@@ -45,5 +45,15 @@ namespace BullshitForm
         {
             Xd();
         }
+
+        private void button3_Click(object sender, System.EventArgs e)
+        {
+            PlayerInteraction.HandleGodMode();
+        }
+
+        private void button4_Click(object sender, System.EventArgs e)
+        {
+            PlayerInteraction.HandleDmg();
+        }
     }
 }

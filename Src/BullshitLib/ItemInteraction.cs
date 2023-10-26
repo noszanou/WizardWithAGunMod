@@ -5,6 +5,7 @@ using Inventory;
 using System.Collections.Generic;
 using System.Text;
 using System;
+using Unity.Collections;
 
 namespace BullshitLib
 {
@@ -93,7 +94,13 @@ namespace BullshitLib
                 return;
             }
 
-            system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
+            GameUniverse.playerFocusedWorld.world.GetSystem<PlayerSystem>().GetAllPlayers(out NativeArray<ECSEntity>.ReadOnly player, out int l);
+            for (int index = 0; index < player.Length; ++index)
+            {
+                ECSEntity entitys = player[index];
+                system.SendAddItemToInventoryCommand(entitys, itemHandle, amount);
+            }
+            //  system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
             Console.WriteLine($"Successfully sent command to give {amount} {itemName}(s) to Player");
         }
 
