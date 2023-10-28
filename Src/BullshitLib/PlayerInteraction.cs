@@ -48,7 +48,7 @@ namespace BullshitLib
         public static void HandleCrafting()
         {
             // Free craft/build etc
-            GameUniverse.persistentWorld.world.GetMainThreadData<TestSettingsData>().FreeCraftingEnabled();
+            GameUniverse.persistentWorld.world.GetMainThreadData<TestSettingsData>().ToggleFreeCrafting();
         }
     }
 }
