@@ -1,9 +1,6 @@
 ﻿using GGECS;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Unity.Collections;
-using UnityEngine.Rendering.VirtualTexturing;
 
 namespace BullshitLib
 {
@@ -25,16 +22,14 @@ namespace BullshitLib
                     if (world.entityManager.HasComponent<GodModeComp>(entity))
                     {
                         world.entityManager.RemoveComponent<GodModeComp>(entity);
-                        PlayerComp comp;
-                        if (world.entityManager.TryGetComponent<PlayerComp>(entity, out comp))
+                        if (world.entityManager.TryGetComponent<PlayerComp>(entity, out PlayerComp comp))
                             GameUniverse.persistentWorld.world.entityManager.RemoveComponent<GodModeComp>(comp.persistentEntity);
                         Console.WriteLine("GodMode OFF for Entity " + entityName);
                     }
                     else
                     {
                         world.entityManager.AddComponent<GodModeComp>(entity);
-                        PlayerComp comp;
-                        if (world.entityManager.TryGetComponent<PlayerComp>(entity, out comp))
+                        if (world.entityManager.TryGetComponent<PlayerComp>(entity, out PlayerComp comp))
                             GameUniverse.persistentWorld.world.entityManager.AddComponent<GodModeComp>(comp.persistentEntity);
                         Console.WriteLine("GodMode ON for Entity " + entityName);
                     }
@@ -43,9 +38,17 @@ namespace BullshitLib
             }
         }
 
+        private static bool OpDamageEnabled { get; set; }
         public static void HandleDmg()
         {
-            GameUniverse.persistentWorld.world.GetMainThreadData<TestSettingsData>().SetDamageMultiplier(5000);
+            OpDamageEnabled = !OpDamageEnabled;
+            GameUniverse.persistentWorld.world.GetMainThreadData<TestSettingsData>().SetDamageMultiplier(OpDamageEnabled ? 50000 : 1);
+        }
+
+        public static void HandleCrafting()
+        {
+            // Free craft/build etc
+            GameUniverse.persistentWorld.world.GetMainThreadData<TestSettingsData>().FreeCraftingEnabled();
         }
     }
 }

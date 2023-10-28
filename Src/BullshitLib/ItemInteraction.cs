@@ -66,7 +66,7 @@ namespace BullshitLib
             return AssetHandle<StaticItem>.invalid;
         }
 
-        public static void CreateItem(string itemNameToFind, int amount = 1) // string fonctionne pas avec le winform MDDDDRRRR pg on prend avec litem id OWO
+        public static void CreateItem(string itemNameToFind, int amount = 1, bool everyone = false)
         {
             if (!GameUniverse.isValid)
             {
@@ -93,15 +93,20 @@ namespace BullshitLib
                 Console.WriteLine($"Could not find item using {itemNameToFind} as a search parameter.");
                 return;
             }
-
-            GameUniverse.playerFocusedWorld.world.GetSystem<PlayerSystem>().GetAllPlayers(out NativeArray<ECSEntity>.ReadOnly player, out int l);
-            for (int index = 0; index < player.Length; ++index)
+            if (everyone)
             {
-                ECSEntity entitys = player[index];
-                system.SendAddItemToInventoryCommand(entitys, itemHandle, amount);
+                GameUniverse.playerFocusedWorld.world.GetSystem<PlayerSystem>().GetAllPlayers(out NativeArray<ECSEntity>.ReadOnly player, out int l);
+                for (int index = 0; index < player.Length; ++index)
+                {
+                    entity = player[index];
+                    system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
+                }
+                Console.WriteLine($"Successfully sent command to give {amount} {itemName}(s) to Player");
+                return;
             }
-            //  system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
+            system.SendAddItemToInventoryCommand(entity, itemHandle, amount);
             Console.WriteLine($"Successfully sent command to give {amount} {itemName}(s) to Player");
+
         }
 
         public static string GetItemsByName(string name = "")

@@ -1,5 +1,4 @@
 ﻿using BullshitLib;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace BullshitForm
@@ -9,6 +8,7 @@ namespace BullshitForm
         public Form1()
         {
             InitializeComponent();
+            LoadGameItemsAssets();
         }
 
         private void button1_Click(object sender, System.EventArgs e)
@@ -21,10 +21,20 @@ namespace BullshitForm
             ItemInteraction.CreateItem((comboBox1.SelectedIndex + 1).ToString(), amount);
         }
 
-        public void Xd()
+        private void button6_Click(object sender, System.EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == -1)
+            {
+                return;
+            }
+            int amount = numericUpDown1.Value <= 0 ? 1 : (int)numericUpDown1.Value;
+            ItemInteraction.CreateItem((comboBox1.SelectedIndex + 1).ToString(), amount, true);
+        }
+
+        public void LoadGameItemsAssets()
         {
             comboBox1.Items.Clear();
-            try // MDR le load des items prend une plombe rompiche
+            try
             {
                 foreach (var allItem in ItemInteraction.GetItemsByName().Split('\n'))
                 {
@@ -43,7 +53,8 @@ namespace BullshitForm
 
         private void button2_Click(object sender, System.EventArgs e)
         {
-            Xd();
+            // It took to long to load assets item so force it with a button
+            LoadGameItemsAssets();
         }
 
         private void button3_Click(object sender, System.EventArgs e)
@@ -54,6 +65,11 @@ namespace BullshitForm
         private void button4_Click(object sender, System.EventArgs e)
         {
             PlayerInteraction.HandleDmg();
+        }
+
+        private void button5_Click(object sender, System.EventArgs e)
+        {
+            PlayerInteraction.HandleCrafting();
         }
     }
 }
