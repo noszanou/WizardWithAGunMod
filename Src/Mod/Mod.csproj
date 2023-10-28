@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<AssemblyName>Giga Zeub</AssemblyName>
-		<Description>Giga Zeub</Description>
+		<AssemblyName>Zanou OP Mod</AssemblyName>
+		<Description>Zanou OP Mod</Description>
 		<Version>1.0.0</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
